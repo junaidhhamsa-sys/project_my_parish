@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=production-parish-secret-key-change-me
+      - DATABASE_URL=sqlite:///./parish.db
+    volumes:
+      - ./backend/parish.db:/app/parish.db
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8089:80"
+    depends_on:
+      - backend
