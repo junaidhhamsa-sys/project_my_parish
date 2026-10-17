@@ -1,4 +1,11 @@
-const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api/v1';
+// Normalize API_BASE to handle trailing slashes and ensure /api/v1 prefix
+const getApiBase = () => {
+  const envUrl = (import.meta.env.VITE_API_BASE_URL || '/api/v1').trim().replace(/\/+$/, '');
+  if (!envUrl) return '/api/v1';
+  return envUrl.endsWith('/api/v1') ? envUrl : `${envUrl}/api/v1`;
+};
+
+const API_BASE = getApiBase();
 
 async function fetchJson(endpoint: string, options: RequestInit = {}) {
   const token = localStorage.getItem('parish_token');
